@@ -49,7 +49,10 @@ class Follow(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'following'], name='unique_user_subscribers')
+                fields=['user', 'following'], name='unique_user_subscribers'),
+            models.CheckConstraint(
+                check=~models.Q(user=models.F('following')),
+                name='user_ne_following')
         ]
 
     def __str__(self):
